@@ -3,7 +3,7 @@ import { Booking } from "../models/index.js";
 
 const router = Router();
 
-// GET /booking?user_id=<id>&_sort=created_at&_order=desc
+// GET /booking?user_id=<id>&_sort=booking_time&_order=desc
 router.get("/", async (req, res) => {
   try {
     const { user_id, _sort, _order } = req.query;
@@ -14,9 +14,9 @@ router.get("/", async (req, res) => {
     }
 
     const order = [];
-    if (_sort === "created_at") {
+    if (_sort === "booking_time") {
       const direction = _order === "desc" ? "DESC" : "ASC";
-      order.push(["created_at", direction]);
+      order.push(["booking_time", direction]);
     }
 
     const bookings = await Booking.findAll({
@@ -37,28 +37,23 @@ router.post("/", async (req, res) => {
       user_id,
       movie_id,
       showtime_id,
-      cinema_id,
-      auditorium_id,
-      total_amount,
+      promotion_id,
+      booking_time,
       status,
-      promotion_code,
-      created_at,
+      payment_method,
+      total_price,
     } = req.body;
 
     const bookingData = {
       user_id,
       movie_id,
       showtime_id,
-      cinema_id,
-      auditorium_id,
-      total_amount,
-      status,
-      promotion_code: promotion_code || null,
-      created_at: created_at || new Date(),
+      promotion_id: promotion_id || null,
+      booking_time: booking_time || new Date(),
+      status: status || "pending",
+      payment_method: payment_method || "cash",
+      total_price,
     };
-    if (bookingData.created_at && typeof bookingData.created_at === 'string') {
-      bookingData.created_at = bookingData.created_at.replace(/%/g, '');
-    }
     const booking = await Booking.create(bookingData);
     res.status(201).json(booking);
   } catch (error) {
@@ -84,11 +79,11 @@ router.get("/:id", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, promotion_code } = req.body;
+    const { status, promotion_id } = req.body;
 
     const [updatedRowsCount] = await Booking.update(
-      { status, promotion_code },
-      { where: { id } },
+      { status, promotion_id },
+      { where: { booking_id: id } },
     );
 
     if (updatedRowsCount === 0) {

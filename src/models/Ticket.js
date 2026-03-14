@@ -4,7 +4,7 @@ import { sequelize } from "../config/sequelize.js";
 const Ticket = sequelize.define(
   "Ticket",
   {
-    id: {
+    ticket_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -13,36 +13,12 @@ const Ticket = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    movie_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    showtime_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    cinema_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    auditorium_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     seat_id: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    seat_label: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     price: {
-      type: DataTypes.DECIMAL(10, 2),
+      type: DataTypes.DECIMAL(12, 2),
       allowNull: false,
     },
   },

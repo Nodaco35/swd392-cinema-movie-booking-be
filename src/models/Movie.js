@@ -4,42 +4,39 @@ import { sequelize } from "../config/sequelize.js";
 const Movie = sequelize.define(
   "Movie",
   {
-    id: {
+    movie_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
     title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    genre: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    duration_minutes: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    rating: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    language: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
     },
     description: {
       type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    duration: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    poster_url: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    poster: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    trailer: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
     },
     release_date: {
       type: DataTypes.DATEONLY,
+      allowNull: true,
+    },
+    status: {
+      type: DataTypes.ENUM("upcoming", "now_showing", "ended"),
       allowNull: false,
+      defaultValue: "now_showing",
     },
   },
   {

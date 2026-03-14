@@ -4,25 +4,21 @@ import { sequelize } from "../config/sequelize.js";
 const Cinema = sequelize.define(
   "Cinema",
   {
-    id: {
+    cinema_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
     name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    city: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(150),
       allowNull: false,
     },
     address: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
     },
-    phone: {
-      type: DataTypes.STRING,
+    city: {
+      type: DataTypes.STRING(100),
       allowNull: false,
     },
   },

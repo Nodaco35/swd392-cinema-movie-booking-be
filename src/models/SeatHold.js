@@ -1,36 +1,40 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/sequelize.js";
 
-const Seat = sequelize.define(
-  "Seat",
+const SeatHold = sequelize.define(
+  "SeatHold",
   {
-    seat_id: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    auditorium_id: {
+    showtime_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    row_name: {
-      type: DataTypes.STRING(5),
-      allowNull: false,
-    },
-    seat_number: {
+    seat_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    type: {
-      type: DataTypes.ENUM("standard", "vip", "couple"),
+    user_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: "standard",
+    },
+    hold_until: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM("holding", "released", "booked", "expired"),
+      allowNull: false,
+      defaultValue: "holding",
     },
   },
   {
-    tableName: "seats",
+    tableName: "seat_holds",
     timestamps: false,
   },
 );
 
-export default Seat;
+export default SeatHold;

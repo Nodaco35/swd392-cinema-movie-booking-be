@@ -4,43 +4,36 @@ import { sequelize } from "../config/sequelize.js";
 const Promotion = sequelize.define(
   "Promotion",
   {
-    id: {
+    promotion_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
     code: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: false,
       unique: true,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    start_date: {
+      type: DataTypes.DATE,
       allowNull: false,
     },
-    discount_type: {
-      type: DataTypes.STRING,
+    end_date: {
+      type: DataTypes.DATE,
       allowNull: false,
     },
-    discount_value: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+    cinema_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
-    valid_from: {
-      type: DataTypes.DATEONLY,
+    discount_percent: {
+      type: DataTypes.DECIMAL(5, 2),
       allowNull: false,
-    },
-    valid_to: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-    },
-    is_active: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-    min_amount: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+      defaultValue: 0,
     },
   },
   {

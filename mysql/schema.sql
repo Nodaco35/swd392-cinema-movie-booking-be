@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS cinema_booking;
 USE cinema_booking;
 
 CREATE TABLE movies (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   title VARCHAR(255),
   genre VARCHAR(100),
   duration_minutes INT,
@@ -14,7 +14,7 @@ CREATE TABLE movies (
 );
 
 CREATE TABLE cinemas (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(255),
   city VARCHAR(100),
   address VARCHAR(255),
@@ -22,21 +22,21 @@ CREATE TABLE cinemas (
 );
 
 CREATE TABLE auditorium (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   cinema_id INT,
   name VARCHAR(100),
   total_seats INT
 );
 
 CREATE TABLE seats (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   auditorium_id INT,
   row_label VARCHAR(5),
   seat_number INT
 );
 
 CREATE TABLE showtimes (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   movie_id INT,
   cinema_id INT,
   auditorium_id INT,
@@ -46,7 +46,7 @@ CREATE TABLE showtimes (
 );
 
 CREATE TABLE users (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(100),
   email VARCHAR(150),
   password VARCHAR(255),
@@ -54,7 +54,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE booking (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT,
   movie_id INT,
   showtime_id INT,
@@ -67,7 +67,7 @@ CREATE TABLE booking (
 );
 
 CREATE TABLE tickets (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   booking_id INT,
   user_id INT,
   movie_id INT,
@@ -80,7 +80,7 @@ CREATE TABLE tickets (
 );
 
 CREATE TABLE promotion (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   code VARCHAR(50),
   description TEXT,
   discount_type VARCHAR(20),
@@ -92,7 +92,7 @@ CREATE TABLE promotion (
 );
 
 CREATE TABLE payment_transactions (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   booking_id INT,
   user_id INT,
   amount DECIMAL(10,2),

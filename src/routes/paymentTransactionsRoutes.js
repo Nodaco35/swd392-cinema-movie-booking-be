@@ -8,22 +8,24 @@ router.post("/", async (req, res) => {
   try {
     const {
       booking_id,
-      user_id,
-      amount,
+      transaction_ref,
+      request_id,
       status,
-      method,
-      transaction_time,
-      reference,
+      response_code,
+      paid_at,
+      raw_response,
+      amount,
     } = req.body;
 
     const paymentData = {
-      booking_id: booking_id || null,
-      user_id,
+      booking_id,
+      transaction_ref,
+      request_id,
+      status: status || "pending",
+      response_code,
+      paid_at,
+      raw_response,
       amount,
-      status,
-      method,
-      transaction_time: transaction_time || new Date(),
-      reference,
     };
 
     const paymentTransaction = await PaymentTransaction.create(paymentData);

@@ -4,14 +4,10 @@ import { sequelize } from "../config/sequelize.js";
 const Booking = sequelize.define(
   "Booking",
   {
-    id: {
+    booking_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-    },
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
     },
     movie_id: {
       type: DataTypes.INTEGER,
@@ -21,28 +17,30 @@ const Booking = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    cinema_id: {
+    promotion_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    auditorium_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    total_amount: {
-      type: DataTypes.DECIMAL(10, 2),
+    booking_time: {
+      type: DataTypes.DATE,
       allowNull: false,
     },
     status: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM("pending", "confirmed", "cancelled", "paid"),
       allowNull: false,
+      defaultValue: "pending",
     },
-    promotion_code: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    payment_method: {
+      type: DataTypes.ENUM("cash", "momo", "vnpay", "zalopay", "card"),
+      allowNull: false,
+      defaultValue: "cash",
     },
-    created_at: {
-      type: DataTypes.DATE,
+    total_price: {
+      type: DataTypes.DECIMAL(12, 2),
       allowNull: false,
     },
   },
