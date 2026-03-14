@@ -56,7 +56,9 @@ router.post("/", async (req, res) => {
       promotion_code: promotion_code || null,
       created_at: created_at || new Date(),
     };
-
+    if (bookingData.created_at && typeof bookingData.created_at === 'string') {
+      bookingData.created_at = bookingData.created_at.replace(/%/g, '');
+    }
     const booking = await Booking.create(bookingData);
     res.status(201).json(booking);
   } catch (error) {
