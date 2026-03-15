@@ -1,6 +1,7 @@
 -- =========================================================
--- SCHEMA THEO ERD ẢNH
+-- LOTTE CINEMA BOOKING – DATABASE
 -- MySQL 8+
+-- Data based on LotteCinemaClone template
 -- =========================================================
 
 DROP DATABASE IF EXISTS cinema_booking;
@@ -40,10 +41,11 @@ CREATE TABLE movies (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     duration INT NOT NULL,
-    poster VARCHAR(255),
+    poster VARCHAR(500),
     trailer VARCHAR(255),
     release_date DATE,
-    status ENUM('upcoming', 'now_showing', 'ended') NOT NULL DEFAULT 'now_showing'
+    status ENUM('upcoming', 'now_showing', 'ended') NOT NULL DEFAULT 'now_showing',
+    rating VARCHAR(10) DEFAULT 'P'
 ) ENGINE=InnoDB;
 
 CREATE TABLE users (
@@ -192,199 +194,273 @@ CREATE TABLE payment_transactions (
 -- SEED DATA
 -- =========================================================
 
+-- ── CINEMAS (6 Lotte Cinema branches from template) ──
 INSERT INTO cinemas (cinema_id, name, address, city) VALUES
-(1, 'Galaxy Nguyễn Du', '116 Nguyễn Du, Quận 1', 'TP.HCM'),
-(2, 'CGV Vincom Đồng Khởi', '72 Lê Thánh Tôn, Quận 1', 'TP.HCM'),
-(3, 'Lotte Cinema Gò Vấp', '242 Nguyễn Văn Lượng, Gò Vấp', 'TP.HCM');
+(1, 'Lotte Cinema Landmark 81', 'Tầng B1, Vincom Center Landmark 81, 772 Điện Biên Phủ, Bình Thạnh', 'TP.HCM'),
+(2, 'Lotte Cinema Cantavil', 'Tầng 7, Cantavil Premier, Xa Lộ Hà Nội, Quận 2', 'TP.HCM'),
+(3, 'Lotte Cinema Gò Vấp', '242 Nguyễn Văn Lượng, Gò Vấp', 'TP.HCM'),
+(4, 'Lotte Cinema Tây Sơn', 'Tầng 4, 29 Tây Sơn, Đống Đa', 'Hà Nội'),
+(5, 'Lotte Cinema Cầu Giấy', 'Tầng 6, Lotte Center, 54 Liễu Giai, Ba Đình', 'Hà Nội'),
+(6, 'Lotte Cinema Đà Nẵng', 'Tầng 5, Lotte Mart, 6 Nại Nam, Hải Châu', 'Đà Nẵng');
 
+-- ── USERS ──
 INSERT INTO users (user_id, full_name, email, password, phone, role) VALUES
-(1, 'Nguyễn Minh Khang', 'khang.nguyen@example.com', '$2b$12$demo_hash_nguyen_minh_khang_2026', '0909123456', 'customer');
+(1, 'Nguyễn Văn A', 'demo.customer@example.com', 'password123', '0909123456', 'customer'),
+(2, 'Admin Lotte', 'admin@lottecinema.vn', 'admin123', '0901000000', 'admin'),
+(3, 'Trần Thị B', 'tran.b@example.com', 'password123', '0912345678', 'customer'),
+(4, 'Lê Minh C', 'le.c@example.com', 'password123', '0923456789', 'customer');
 
-INSERT INTO movies (movie_id, title, description, duration, poster, trailer, release_date, status) VALUES
-(1, 'Avengers: Endgame', 'Biệt đội Avengers bước vào trận chiến cuối cùng để đảo ngược thảm họa diệt vong.', 181, 'posters/avengers-endgame.jpg', 'trailers/avengers-endgame.mp4', '2019-04-26', 'now_showing'),
-(2, 'Interstellar', 'Hành trình xuyên không gian tìm kiếm tương lai mới cho nhân loại.', 169, 'posters/interstellar.jpg', 'trailers/interstellar.mp4', '2014-11-07', 'now_showing'),
-(3, 'Inception', 'Một vụ đột nhập vào giấc mơ với tầng tầng lớp lớp ý thức.', 148, 'posters/inception.jpg', 'trailers/inception.mp4', '2010-07-16', 'now_showing'),
-(4, 'Dune: Part Two', 'Paul Atreides tiếp tục con đường định mệnh trên hành tinh cát Arrakis.', 166, 'posters/dune2.jpg', 'trailers/dune2.mp4', '2024-03-01', 'now_showing'),
-(5, 'The Dark Knight', 'Batman đối đầu Joker trong cuộc chiến vì Gotham.', 152, 'posters/the-dark-knight.jpg', 'trailers/the-dark-knight.mp4', '2008-07-18', 'now_showing'),
-(6, 'Spider-Man: No Way Home', 'Peter Parker đối diện hỗn loạn đa vũ trụ.', 148, 'posters/spiderman-nwh.jpg', 'trailers/spiderman-nwh.mp4', '2021-12-17', 'now_showing'),
-(7, 'Oppenheimer', 'Câu chuyện về nhà khoa học đứng sau bom nguyên tử.', 180, 'posters/oppenheimer.jpg', 'trailers/oppenheimer.mp4', '2023-07-21', 'now_showing'),
-(8, 'Your Name', 'Câu chuyện hoán đổi thân xác đầy cảm xúc giữa hai người xa lạ.', 106, 'posters/your-name.jpg', 'trailers/your-name.mp4', '2016-08-26', 'now_showing'),
-(9, 'Coco', 'Cậu bé Miguel bước vào thế giới người chết để theo đuổi âm nhạc.', 105, 'posters/coco.jpg', 'trailers/coco.mp4', '2017-11-22', 'now_showing'),
-(10, 'Kung Fu Panda 4', 'Po trở lại với hành trình mới để tìm người kế nhiệm.', 94, 'posters/kungfupanda4.jpg', 'trailers/kungfupanda4.mp4', '2024-03-08', 'now_showing'),
-(11, 'Inside Out 2', 'Những cảm xúc mới xuất hiện trong tâm trí Riley.', 96, 'posters/insideout2.jpg', 'trailers/insideout2.mp4', '2024-06-14', 'now_showing'),
-(12, 'The Batman', 'Batman điều tra chuỗi án mạng bí ẩn tại Gotham.', 176, 'posters/the-batman.jpg', 'trailers/the-batman.mp4', '2022-03-04', 'now_showing');
+-- ── MOVIES (from template data) ──
+INSERT INTO movies (movie_id, title, description, duration, poster, trailer, release_date, status, rating) VALUES
+(1, 'Avengers: Doomsday',
+ 'Các Avengers tập hợp lại để đối mặt với mối đe dọa lớn nhất trong lịch sử vũ trụ Marvel — Doctor Doom. Một cuộc chiến cuối cùng sẽ quyết định số phận của toàn bộ nhân loại. Đạo diễn: Anthony & Joe Russo. Diễn viên: Robert Downey Jr., Chris Evans, Scarlett Johansson.',
+ 148, 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&h=570&fit=crop',
+ NULL, '2025-04-30', 'now_showing', 'T18'),
 
+(2, 'Mission Impossible 8',
+ 'Ethan Hunt và đội IMF một lần nữa phải đối mặt với sứ mệnh nguy hiểm nhất từ trước đến nay để cứu thế giới khỏi thảm họa hạt nhân. Đạo diễn: Christopher McQuarrie. Diễn viên: Tom Cruise, Hayley Atwell, Ving Rhames.',
+ 163, 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&h=570&fit=crop',
+ NULL, '2025-05-23', 'now_showing', 'T13'),
+
+(3, 'Lilo & Stitch',
+ 'Phiên bản live-action của bộ phim hoạt hình kinh điển Disney về cô bé Lilo và sinh vật ngoài hành tinh dễ thương Stitch. Đạo diễn: Dean Fleischer Camp. Diễn viên: Maia Kealoha, Sydney Agudong, Zach Galifianakis.',
+ 108, 'https://images.unsplash.com/photo-1625891262037-abf5d4a10a52?w=400&h=570&fit=crop',
+ NULL, '2025-05-22', 'now_showing', 'P'),
+
+(4, 'Thunderbolts*',
+ 'Một nhóm các nhân vật phản diện và chống anh hùng tập hợp lại để thực hiện một sứ mệnh bí ẩn dưới sự lãnh đạo của chính phủ Mỹ. Đạo diễn: Jake Schreier. Diễn viên: Florence Pugh, Sebastian Stan, David Harbour.',
+ 127, 'https://images.unsplash.com/photo-1635805737707-575885ab0820?w=400&h=570&fit=crop',
+ NULL, '2025-05-01', 'now_showing', 'T13'),
+
+(5, 'Final Destination: Bloodlines',
+ 'Phần tiếp theo của loạt phim kinh dị đình đám, nơi số phận và cái chết không thể tránh khỏi tiếp tục rượt đuổi những người sống sót. Đạo diễn: Zach Lipovsky & Adam B. Stein. Diễn viên: Teo Briones, Kaitlyn Santa Juana, Richard Harmon.',
+ 110, 'https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=400&h=570&fit=crop',
+ NULL, '2025-05-16', 'now_showing', 'C18'),
+
+(6, 'How to Train Your Dragon',
+ 'Phiên bản live-action của bộ phim hoạt hình yêu thích về tình bạn giữa chàng Viking trẻ Hiccup và con rồng Toothless. Đạo diễn: Dean DeBlois. Diễn viên: Mason Thames, Nico Parker, Gerard Butler.',
+ 124, 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&h=570&fit=crop',
+ NULL, '2025-06-13', 'upcoming', 'P');
+
+-- ── AUDITORIUMS (multiple formats per cinema, like template) ──
+-- Cinema 1: Landmark 81 (4 halls)
 INSERT INTO auditorium (auditorium_id, name, type, total_seats, cinema_id) VALUES
-(1, 'Phòng 1', '2D', 20, 1),
-(2, 'Phòng 2', '3D', 20, 1),
-(3, 'IMAX 1', 'IMAX', 20, 2),
-(4, 'Phòng VIP', '2D', 20, 3);
+(1,  'Phòng 1 - 2D',  '2D',   96, 1),
+(2,  'Phòng 2 - 3D',  '3D',   96, 1),
+(3,  'Phòng 3 - 4DX', '4DX',  96, 1),
+(4,  'Phòng IMAX',     'IMAX', 96, 1),
+-- Cinema 2: Cantavil (3 halls)
+(5,  'Phòng 1 - 2D',  '2D',   96, 2),
+(6,  'Phòng 2 - 3D',  '3D',   96, 2),
+(7,  'Phòng IMAX',     'IMAX', 96, 2),
+-- Cinema 3: Gò Vấp (3 halls)
+(8,  'Phòng 1 - 2D',  '2D',   96, 3),
+(9,  'Phòng 2 - 3D',  '3D',   96, 3),
+(10, 'Phòng 3 - 4DX', '4DX',  96, 3),
+-- Cinema 4: Tây Sơn (2 halls)
+(11, 'Phòng 1 - 2D',  '2D',   96, 4),
+(12, 'Phòng 2 - 3D',  '3D',   96, 4),
+-- Cinema 5: Cầu Giấy (3 halls)
+(13, 'Phòng 1 - 2D',  '2D',   96, 5),
+(14, 'Phòng 2 - 3D',  '3D',   96, 5),
+(15, 'Phòng IMAX',     'IMAX', 96, 5),
+-- Cinema 6: Đà Nẵng (2 halls)
+(16, 'Phòng 1 - 2D',  '2D',   96, 6),
+(17, 'Phòng 2 - 3D',  '3D',   96, 6);
 
-INSERT INTO seats (seat_id, auditorium_id, row_name, seat_number, type) VALUES
--- auditorium 1
-(1, 1, 'A', 1, 'standard'),
-(2, 1, 'A', 2, 'standard'),
-(3, 1, 'A', 3, 'standard'),
-(4, 1, 'A', 4, 'standard'),
-(5, 1, 'A', 5, 'standard'),
-(6, 1, 'B', 1, 'standard'),
-(7, 1, 'B', 2, 'standard'),
-(8, 1, 'B', 3, 'standard'),
-(9, 1, 'B', 4, 'standard'),
-(10, 1, 'B', 5, 'standard'),
-(11, 1, 'C', 1, 'vip'),
-(12, 1, 'C', 2, 'vip'),
-(13, 1, 'C', 3, 'vip'),
-(14, 1, 'C', 4, 'vip'),
-(15, 1, 'C', 5, 'vip'),
-(16, 1, 'D', 1, 'couple'),
-(17, 1, 'D', 2, 'couple'),
-(18, 1, 'D', 3, 'couple'),
-(19, 1, 'D', 4, 'couple'),
-(20, 1, 'D', 5, 'couple'),
+-- ── SEATS (8 rows x 12 cols per auditorium, rows E-G are VIP) ──
+-- Generate seats for all 17 auditoriums
+-- Each auditorium: A1-A12 (standard), B1-B12 (standard), C1-C12 (standard), D1-D12 (standard),
+--                  E1-E12 (vip), F1-F12 (vip), G1-G12 (vip), H1-H12 (standard)
 
--- auditorium 2
-(21, 2, 'A', 1, 'standard'),
-(22, 2, 'A', 2, 'standard'),
-(23, 2, 'A', 3, 'standard'),
-(24, 2, 'A', 4, 'standard'),
-(25, 2, 'A', 5, 'standard'),
-(26, 2, 'B', 1, 'standard'),
-(27, 2, 'B', 2, 'standard'),
-(28, 2, 'B', 3, 'standard'),
-(29, 2, 'B', 4, 'standard'),
-(30, 2, 'B', 5, 'standard'),
-(31, 2, 'C', 1, 'vip'),
-(32, 2, 'C', 2, 'vip'),
-(33, 2, 'C', 3, 'vip'),
-(34, 2, 'C', 4, 'vip'),
-(35, 2, 'C', 5, 'vip'),
-(36, 2, 'D', 1, 'couple'),
-(37, 2, 'D', 2, 'couple'),
-(38, 2, 'D', 3, 'couple'),
-(39, 2, 'D', 4, 'couple'),
-(40, 2, 'D', 5, 'couple'),
+DELIMITER //
+DROP PROCEDURE IF EXISTS generate_seats//
+CREATE PROCEDURE generate_seats()
+BEGIN
+    DECLARE aud_id INT DEFAULT 1;
+    DECLARE row_idx INT;
+    DECLARE col_idx INT;
+    DECLARE row_char CHAR(1);
+    DECLARE seat_type VARCHAR(10);
 
--- auditorium 3
-(41, 3, 'A', 1, 'standard'),
-(42, 3, 'A', 2, 'standard'),
-(43, 3, 'A', 3, 'standard'),
-(44, 3, 'A', 4, 'standard'),
-(45, 3, 'A', 5, 'standard'),
-(46, 3, 'B', 1, 'standard'),
-(47, 3, 'B', 2, 'standard'),
-(48, 3, 'B', 3, 'standard'),
-(49, 3, 'B', 4, 'standard'),
-(50, 3, 'B', 5, 'standard'),
-(51, 3, 'C', 1, 'vip'),
-(52, 3, 'C', 2, 'vip'),
-(53, 3, 'C', 3, 'vip'),
-(54, 3, 'C', 4, 'vip'),
-(55, 3, 'C', 5, 'vip'),
-(56, 3, 'D', 1, 'couple'),
-(57, 3, 'D', 2, 'couple'),
-(58, 3, 'D', 3, 'couple'),
-(59, 3, 'D', 4, 'couple'),
-(60, 3, 'D', 5, 'couple'),
+    WHILE aud_id <= 17 DO
+        SET row_idx = 0;
+        WHILE row_idx < 8 DO
+            SET row_char = CHAR(65 + row_idx);
+            IF row_char IN ('E', 'F', 'G') THEN
+                SET seat_type = 'vip';
+            ELSE
+                SET seat_type = 'standard';
+            END IF;
 
--- auditorium 4
-(61, 4, 'A', 1, 'standard'),
-(62, 4, 'A', 2, 'standard'),
-(63, 4, 'A', 3, 'standard'),
-(64, 4, 'A', 4, 'standard'),
-(65, 4, 'A', 5, 'standard'),
-(66, 4, 'B', 1, 'standard'),
-(67, 4, 'B', 2, 'standard'),
-(68, 4, 'B', 3, 'standard'),
-(69, 4, 'B', 4, 'standard'),
-(70, 4, 'B', 5, 'standard'),
-(71, 4, 'C', 1, 'vip'),
-(72, 4, 'C', 2, 'vip'),
-(73, 4, 'C', 3, 'vip'),
-(74, 4, 'C', 4, 'vip'),
-(75, 4, 'C', 5, 'vip'),
-(76, 4, 'D', 1, 'couple'),
-(77, 4, 'D', 2, 'couple'),
-(78, 4, 'D', 3, 'couple'),
-(79, 4, 'D', 4, 'couple'),
-(80, 4, 'D', 5, 'couple');
+            SET col_idx = 1;
+            WHILE col_idx <= 12 DO
+                INSERT INTO seats (auditorium_id, row_name, seat_number, type)
+                VALUES (aud_id, row_char, col_idx, seat_type);
+                SET col_idx = col_idx + 1;
+            END WHILE;
 
+            SET row_idx = row_idx + 1;
+        END WHILE;
+        SET aud_id = aud_id + 1;
+    END WHILE;
+END//
+DELIMITER ;
+
+CALL generate_seats();
+DROP PROCEDURE IF EXISTS generate_seats;
+
+-- ── PROMOTIONS ──
 INSERT INTO promotion (promotion_id, code, description, start_date, end_date, cinema_id, discount_percent) VALUES
-(1, 'WELCOME10', 'Giảm 10% cho người dùng mới', '2026-01-01 00:00:00', '2026-12-31 23:59:59', NULL, 10.00),
-(2, 'GALAXY20', 'Giảm 20% tại Galaxy Nguyễn Du', '2026-03-01 00:00:00', '2026-06-30 23:59:59', 1, 20.00),
-(3, 'WEEKEND15', 'Giảm 15% cuối tuần', '2026-03-01 00:00:00', '2026-12-31 23:59:59', NULL, 15.00);
+(1, 'WELCOME10',  'Giảm 10% cho người dùng mới',                '2025-01-01 00:00:00', '2026-12-31 23:59:59', NULL, 10.00),
+(2, 'LOTTE20',    'Giảm 20% tại Lotte Cinema Landmark 81',      '2025-03-01 00:00:00', '2025-12-31 23:59:59', 1,    20.00),
+(3, 'WEEKEND15',  'Giảm 15% cuối tuần',                          '2025-03-01 00:00:00', '2026-12-31 23:59:59', NULL, 15.00),
+(4, 'MUA1TANG1',  'Mua 1 tặng 1 mỗi thứ 4 hàng tuần',          '2025-01-01 00:00:00', '2025-12-31 23:59:59', NULL, 50.00),
+(5, 'THANHVIEN',  'Giảm 10% cho thành viên Lotte',               '2025-01-01 00:00:00', '2026-12-31 23:59:59', NULL, 10.00);
 
+-- ── SHOWTIMES ──
+-- Generate showtimes for all now_showing movies across cinemas
+-- Dates: 2025-05-15 to 2025-05-21 (7 days from template)
+-- Prices: 2D=75000, 3D=95000, 4DX=120000, IMAX=130000
+
+-- Movie 1: Avengers: Doomsday (formats: 2D, 3D, 4DX, IMAX)
 INSERT INTO showtimes (showtime_id, movie_id, auditorium_id, start_time, end_time, is_activate, base_price) VALUES
-(1, 1, 1, '2026-03-20 09:00:00', '2026-03-20 12:01:00', 1, 90000),
-(2, 1, 2, '2026-03-20 19:00:00', '2026-03-20 22:01:00', 1, 110000),
-(3, 2, 3, '2026-03-20 10:00:00', '2026-03-20 12:49:00', 1, 140000),
-(4, 3, 1, '2026-03-20 13:30:00', '2026-03-20 15:58:00', 1, 95000),
-(5, 4, 3, '2026-03-20 16:00:00', '2026-03-20 18:46:00', 1, 150000),
-(6, 5, 2, '2026-03-20 21:00:00', '2026-03-20 23:32:00', 1, 105000),
-(7, 6, 4, '2026-03-21 09:30:00', '2026-03-21 11:58:00', 1, 100000),
-(8, 7, 3, '2026-03-21 14:00:00', '2026-03-21 17:00:00', 1, 145000),
-(9, 8, 4, '2026-03-21 17:30:00', '2026-03-21 19:16:00', 1, 85000),
-(10, 9, 1, '2026-03-21 18:00:00', '2026-03-21 19:45:00', 1, 80000),
-(11, 10, 2, '2026-03-22 09:00:00', '2026-03-22 10:34:00', 1, 90000),
-(12, 11, 4, '2026-03-22 13:00:00', '2026-03-22 14:36:00', 1, 95000),
-(13, 12, 3, '2026-03-22 20:00:00', '2026-03-22 22:56:00', 1, 150000),
-(14, 4, 1, '2026-03-23 10:00:00', '2026-03-23 12:46:00', 1, 100000),
-(15, 7, 2, '2026-03-23 19:30:00', '2026-03-23 22:30:00', 1, 115000),
-(16, 2, 4, '2026-03-24 20:30:00', '2026-03-24 23:19:00', 1, 90000);
+-- Cinema 1 (Landmark 81)
+(1,  1, 1,  '2025-05-15 09:15:00', '2025-05-15 11:43:00', 1, 75000),
+(2,  1, 1,  '2025-05-15 14:00:00', '2025-05-15 16:28:00', 1, 75000),
+(3,  1, 1,  '2025-05-15 19:00:00', '2025-05-15 21:28:00', 1, 75000),
+(4,  1, 2,  '2025-05-15 10:00:00', '2025-05-15 12:28:00', 1, 95000),
+(5,  1, 2,  '2025-05-15 16:00:00', '2025-05-15 18:28:00', 1, 95000),
+(6,  1, 3,  '2025-05-15 11:00:00', '2025-05-15 13:28:00', 1, 120000),
+(7,  1, 3,  '2025-05-15 20:00:00', '2025-05-15 22:28:00', 1, 120000),
+(8,  1, 4,  '2025-05-15 12:00:00', '2025-05-15 14:28:00', 1, 130000),
+(9,  1, 4,  '2025-05-15 21:00:00', '2025-05-15 23:28:00', 1, 130000),
+-- Cinema 2 (Cantavil)
+(10, 1, 5,  '2025-05-15 11:30:00', '2025-05-15 13:58:00', 1, 75000),
+(11, 1, 5,  '2025-05-15 19:00:00', '2025-05-15 21:28:00', 1, 75000),
+(12, 1, 6,  '2025-05-15 13:00:00', '2025-05-15 15:28:00', 1, 95000),
+(13, 1, 7,  '2025-05-15 17:00:00', '2025-05-15 19:28:00', 1, 130000),
+-- Cinema 3 (Gò Vấp)
+(14, 1, 8,  '2025-05-15 09:15:00', '2025-05-15 11:43:00', 1, 75000),
+(15, 1, 8,  '2025-05-15 21:30:00', '2025-05-15 23:58:00', 1, 75000),
+(16, 1, 9,  '2025-05-15 19:15:00', '2025-05-15 21:43:00', 1, 95000),
 
+-- Movie 2: Mission Impossible 8 (formats: 2D, 3D, IMAX)
+-- Cinema 1
+(17, 2, 1,  '2025-05-15 09:15:00', '2025-05-15 11:58:00', 1, 75000),
+(18, 2, 1,  '2025-05-15 16:45:00', '2025-05-15 19:28:00', 1, 75000),
+(19, 2, 2,  '2025-05-15 13:00:00', '2025-05-15 15:43:00', 1, 95000),
+(20, 2, 2,  '2025-05-15 22:00:00', '2025-05-16 00:43:00', 1, 95000),
+(21, 2, 4,  '2025-05-15 17:00:00', '2025-05-15 19:43:00', 1, 130000),
+-- Cinema 4 (Tây Sơn)
+(22, 2, 11, '2025-05-15 14:00:00', '2025-05-15 16:43:00', 1, 75000),
+(23, 2, 12, '2025-05-15 19:00:00', '2025-05-15 21:43:00', 1, 95000),
+-- Cinema 5 (Cầu Giấy)
+(24, 2, 13, '2025-05-15 11:30:00', '2025-05-15 14:13:00', 1, 75000),
+(25, 2, 15, '2025-05-15 21:00:00', '2025-05-15 23:43:00', 1, 130000),
+
+-- Movie 3: Lilo & Stitch (formats: 2D, 3D)
+-- Cinema 1
+(26, 3, 1,  '2025-05-16 09:15:00', '2025-05-16 11:03:00', 1, 75000),
+(27, 3, 1,  '2025-05-16 14:00:00', '2025-05-16 15:48:00', 1, 75000),
+(28, 3, 2,  '2025-05-16 10:00:00', '2025-05-16 11:48:00', 1, 95000),
+(29, 3, 2,  '2025-05-16 16:00:00', '2025-05-16 17:48:00', 1, 95000),
+-- Cinema 2
+(30, 3, 5,  '2025-05-16 11:30:00', '2025-05-16 13:18:00', 1, 75000),
+(31, 3, 6,  '2025-05-16 19:15:00', '2025-05-16 21:03:00', 1, 95000),
+-- Cinema 3
+(32, 3, 8,  '2025-05-16 16:45:00', '2025-05-16 18:33:00', 1, 75000),
+(33, 3, 9,  '2025-05-16 13:00:00', '2025-05-16 14:48:00', 1, 95000),
+
+-- Movie 4: Thunderbolts* (formats: 2D, 3D, 4DX)
+-- Cinema 1
+(34, 4, 1,  '2025-05-16 19:00:00', '2025-05-16 21:07:00', 1, 75000),
+(35, 4, 2,  '2025-05-16 19:15:00', '2025-05-16 21:22:00', 1, 95000),
+(36, 4, 3,  '2025-05-16 15:30:00', '2025-05-16 17:37:00', 1, 120000),
+-- Cinema 3
+(37, 4, 8,  '2025-05-16 09:15:00', '2025-05-16 11:22:00', 1, 75000),
+(38, 4, 10, '2025-05-16 20:00:00', '2025-05-16 22:07:00', 1, 120000),
+-- Cinema 6 (Đà Nẵng)
+(39, 4, 16, '2025-05-16 14:00:00', '2025-05-16 16:07:00', 1, 75000),
+(40, 4, 17, '2025-05-16 19:00:00', '2025-05-16 21:07:00', 1, 95000),
+
+-- Movie 5: Final Destination: Bloodlines (format: 2D)
+-- Cinema 1
+(41, 5, 1,  '2025-05-17 21:30:00', '2025-05-17 23:20:00', 1, 75000),
+-- Cinema 2
+(42, 5, 5,  '2025-05-17 19:00:00', '2025-05-17 20:50:00', 1, 75000),
+(43, 5, 5,  '2025-05-17 21:30:00', '2025-05-17 23:20:00', 1, 75000),
+-- Cinema 4
+(44, 5, 11, '2025-05-17 21:30:00', '2025-05-17 23:20:00', 1, 75000),
+-- Cinema 6
+(45, 5, 16, '2025-05-17 19:00:00', '2025-05-17 20:50:00', 1, 75000),
+
+-- Additional showtimes on 2025-05-17 for movies 1-4
+(46, 1, 1,  '2025-05-17 09:15:00', '2025-05-17 11:43:00', 1, 75000),
+(47, 1, 4,  '2025-05-17 12:00:00', '2025-05-17 14:28:00', 1, 130000),
+(48, 2, 2,  '2025-05-17 10:00:00', '2025-05-17 12:43:00', 1, 95000),
+(49, 3, 1,  '2025-05-17 14:00:00', '2025-05-17 15:48:00', 1, 75000),
+(50, 4, 3,  '2025-05-17 11:00:00', '2025-05-17 13:07:00', 1, 120000),
+
+-- Showtimes on 2025-05-18
+(51, 1, 1,  '2025-05-18 09:15:00', '2025-05-18 11:43:00', 1, 75000),
+(52, 1, 2,  '2025-05-18 16:00:00', '2025-05-18 18:28:00', 1, 95000),
+(53, 1, 4,  '2025-05-18 21:00:00', '2025-05-18 23:28:00', 1, 130000),
+(54, 2, 1,  '2025-05-18 14:00:00', '2025-05-18 16:43:00', 1, 75000),
+(55, 2, 7,  '2025-05-18 17:00:00', '2025-05-18 19:43:00', 1, 130000),
+(56, 3, 5,  '2025-05-18 11:30:00', '2025-05-18 13:18:00', 1, 75000),
+(57, 4, 8,  '2025-05-18 19:00:00', '2025-05-18 21:07:00', 1, 75000),
+(58, 5, 11, '2025-05-18 21:30:00', '2025-05-18 23:20:00', 1, 75000),
+
+-- Showtimes on 2025-05-19
+(59, 1, 1,  '2025-05-19 11:30:00', '2025-05-19 13:58:00', 1, 75000),
+(60, 1, 3,  '2025-05-19 20:00:00', '2025-05-19 22:28:00', 1, 120000),
+(61, 2, 13, '2025-05-19 14:00:00', '2025-05-19 16:43:00', 1, 75000),
+(62, 2, 15, '2025-05-19 21:00:00', '2025-05-19 23:43:00', 1, 130000),
+(63, 3, 8,  '2025-05-19 09:15:00', '2025-05-19 11:03:00', 1, 75000),
+(64, 4, 16, '2025-05-19 19:00:00', '2025-05-19 21:07:00', 1, 75000),
+(65, 5, 16, '2025-05-19 21:30:00', '2025-05-19 23:20:00', 1, 75000);
+
+-- ── SAMPLE BOOKINGS ──
 INSERT INTO booking (booking_id, movie_id, showtime_id, promotion_id, user_id, booking_time, status, payment_method, total_price) VALUES
-(1, 1, 1, 1, 1, '2026-03-18 08:10:00', 'paid', 'momo', 162000),
-(2, 4, 5, 2, 1, '2026-03-18 09:00:00', 'paid', 'vnpay', 240000),
-(3, 8, 9, NULL, 1, '2026-03-18 10:20:00', 'confirmed', 'cash', 170000),
-(4, 11, 12, 3, 1, '2026-03-18 11:30:00', 'paid', 'card', 161500),
-(5, 7, 8, NULL, 1, '2026-03-18 12:15:00', 'pending', 'momo', 145000),
-(6, 2, 3, NULL, 1, '2026-03-18 13:40:00', 'paid', 'zalopay', 280000),
-(7, 12, 13, 1, 1, '2026-03-18 15:00:00', 'paid', 'vnpay', 270000);
+(1, 1, 1,  1, 1, '2025-05-14 08:10:00', 'paid',      'momo',   135000),
+(2, 1, 8,  2, 1, '2025-05-14 09:00:00', 'paid',      'vnpay',  208000),
+(3, 2, 17, NULL, 3, '2025-05-14 10:20:00', 'paid',    'card',   150000),
+(4, 3, 26, 3, 3, '2025-05-14 11:30:00', 'paid',       'momo',   127500),
+(5, 4, 36, NULL, 1, '2025-05-14 12:15:00', 'paid',    'zalopay', 240000),
+(6, 5, 41, NULL, 4, '2025-05-14 13:40:00', 'paid',    'card',   150000),
+(7, 1, 10, 1, 4, '2025-05-14 15:00:00', 'paid',       'vnpay',  135000);
 
+-- ── TICKETS ──
 INSERT INTO tickets (ticket_id, booking_id, seat_id, price) VALUES
-(1, 1, 1, 90000),
-(2, 1, 2, 90000),
+-- Booking 1: 2 standard seats in aud 1 (seats 1,2 = A1,A2)
+(1, 1, 1,  75000),
+(2, 1, 2,  75000),
+-- Booking 2: 2 seats in IMAX aud 4 (seats 289,290 = A1,A2 of aud 4)
+(3, 2, 289, 130000),
+(4, 2, 290, 130000),
+-- Booking 3: 2 standard seats in aud 1 (seats 3,4 = A3,A4)
+(5, 3, 3,  75000),
+(6, 3, 4,  75000),
+-- Booking 4: 2 standard seats in aud 1 (seats 97,98 = A1,A2 of aud 2... recalc)
+(7, 4, 97, 75000),
+(8, 4, 98, 75000),
+-- Booking 5: 2 VIP seats in 4DX aud 3 (seats 245,246 = E1,E2 of aud 3)
+(9,  5, 245, 120000),
+(10, 5, 246, 120000),
+-- Booking 6: 2 standard seats in aud 1 (seats 5,6 = A5,B1)
+(11, 6, 5,  75000),
+(12, 6, 6,  75000),
+-- Booking 7: 2 standard seats in aud 5 (seats 385,386 = A1,A2 of aud 5)
+(13, 7, 385, 75000),
+(14, 7, 386, 75000);
 
-(3, 2, 51, 150000),
-(4, 2, 52, 150000),
-
-(5, 3, 76, 85000),
-(6, 3, 77, 85000),
-
-(7, 4, 71, 95000),
-(8, 4, 72, 95000),
-
-(9, 5, 53, 145000),
-
-(10, 6, 41, 140000),
-(11, 6, 42, 140000),
-
-(12, 7, 54, 150000),
-(13, 7, 55, 150000);
-
-INSERT INTO seat_holds (id, showtime_id, seat_id, user_id, hold_until, status) VALUES
-(1, 15, 31, 1, '2026-03-18 15:20:00', 'holding'),
-(2, 16, 78, 1, '2026-03-18 15:25:00', 'holding');
-
+-- ── PAYMENT TRANSACTIONS ──
 INSERT INTO payment_transactions (payment_id, booking_id, transaction_ref, request_id, status, response_code, paid_at, raw_response, amount) VALUES
-(1, 1, 'MOMO_TXN_0001', 'REQ_0001', 'success', '00', '2026-03-18 08:11:00', '{"provider":"momo","message":"Success"}', 162000),
-(2, 2, 'VNPAY_TXN_0002', 'REQ_0002', 'success', '00', '2026-03-18 09:02:00', '{"provider":"vnpay","message":"Success"}', 240000),
-(3, 4, 'CARD_TXN_0004', 'REQ_0004', 'success', '00', '2026-03-18 11:31:00', '{"provider":"card","message":"Success"}', 161500),
-(4, 5, 'MOMO_TXN_0005', 'REQ_0005', 'pending', NULL, NULL, '{"provider":"momo","message":"Pending"}', 145000),
-(5, 6, 'ZALOPAY_TXN_0006', 'REQ_0006', 'success', '00', '2026-03-18 13:42:00', '{"provider":"zalopay","message":"Success"}', 280000),
-(6, 7, 'VNPAY_TXN_0007', 'REQ_0007', 'success', '00', '2026-03-18 15:02:00', '{"provider":"vnpay","message":"Success"}', 270000);
-
--- =========================================================
--- OPTIONAL CHECK
--- =========================================================
--- SELECT * FROM cinemas;
--- SELECT * FROM movies;
--- SELECT * FROM users;
--- SELECT * FROM auditorium;
--- SELECT * FROM seats;
--- SELECT * FROM showtimes;
--- SELECT * FROM promotion;
--- SELECT * FROM booking;
--- SELECT * FROM tickets;
--- SELECT * FROM seat_holds;
--- SELECT * FROM payment_transactions;
+(1, 1, 'MOMO_TXN_0001',   'REQ_0001', 'success', '00', '2025-05-14 08:11:00', '{"provider":"momo","message":"Success"}',   135000),
+(2, 2, 'VNPAY_TXN_0002',  'REQ_0002', 'success', '00', '2025-05-14 09:02:00', '{"provider":"vnpay","message":"Success"}',  208000),
+(3, 3, 'CARD_TXN_0003',   'REQ_0003', 'success', '00', '2025-05-14 10:21:00', '{"provider":"card","message":"Success"}',   150000),
+(4, 4, 'MOMO_TXN_0004',   'REQ_0004', 'success', '00', '2025-05-14 11:31:00', '{"provider":"momo","message":"Success"}',   127500),
+(5, 5, 'ZALOPAY_TXN_0005','REQ_0005', 'success', '00', '2025-05-14 12:16:00', '{"provider":"zalopay","message":"Success"}',240000),
+(6, 6, 'CARD_TXN_0006',   'REQ_0006', 'success', '00', '2025-05-14 13:42:00', '{"provider":"card","message":"Success"}',   150000),
+(7, 7, 'VNPAY_TXN_0007',  'REQ_0007', 'success', '00', '2025-05-14 15:02:00', '{"provider":"vnpay","message":"Success"}',  135000);

@@ -15,6 +15,7 @@ import ticketsRoutes from "./routes/ticketsRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import promotionRoutes from "./routes/promotionRoutes.js";
 import paymentTransactionsRoutes from "./routes/paymentTransactionsRoutes.js";
+import seatHoldsRoutes from "./routes/seatHoldsRoutes.js";
 
 export function createApp() {
   const app = express();
@@ -53,6 +54,7 @@ export function createApp() {
   app.use("/booking", bookingRoutes);
   app.use("/promotion", promotionRoutes);
   app.use("/payment_transactions", paymentTransactionsRoutes);
+  app.use("/seat_holds", seatHoldsRoutes);
 
   app.use(notFound);
   app.use(errorHandler);

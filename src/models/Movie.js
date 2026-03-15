@@ -22,7 +22,7 @@ const Movie = sequelize.define(
       allowNull: false,
     },
     poster: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(500),
       allowNull: true,
     },
     trailer: {
@@ -37,6 +37,11 @@ const Movie = sequelize.define(
       type: DataTypes.ENUM("upcoming", "now_showing", "ended"),
       allowNull: false,
       defaultValue: "now_showing",
+    },
+    rating: {
+      type: DataTypes.STRING(10),
+      allowNull: true,
+      defaultValue: "P",
     },
   },
   {
