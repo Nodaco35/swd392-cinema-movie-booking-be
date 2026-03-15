@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import { env } from "./config/env.js";
-import { errorHandler } from "./middleware/errorHandler.js";
-import { notFound } from "./middleware/notFound.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import { notFound } from "./middlewares/notFound.js";
 
 import healthRoutes from "./routes/healthRoutes.js";
 import usersRoutes from "./routes/usersRoutes.js";
