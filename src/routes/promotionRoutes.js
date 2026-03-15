@@ -1,20 +1,22 @@
 import { Router } from "express";
+import { Op } from "sequelize";
 import { Promotion } from "../models/index.js";
 
 const router = Router();
 
-// GET /promotion?code=<code>&is_active=true
+// GET /promotion?code=<code>
 router.get("/", async (req, res) => {
   try {
-    const { code, is_active } = req.query;
+    const { code } = req.query;
 
     const where = {};
     if (code !== undefined) {
       where.code = code;
     }
-    if (is_active !== undefined) {
-      where.is_active = is_active === "true";
-    }
+    // Check if current date is between start_date and end_date
+    const now = new Date();
+    where.start_date = { [Op.lte]: now };
+    where.end_date = { [Op.gte]: now };
 
     const promotions = await Promotion.findAll({
       where: Object.keys(where).length ? where : undefined,

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Ticket } from "../models/index.js";
+import { Ticket, Booking } from "../models/index.js";
 
 const router = Router();
 
@@ -13,12 +13,19 @@ router.get("/", async (req, res) => {
     if (booking_id !== undefined) {
       where.booking_id = booking_id;
     }
+
+    const include = [];
     if (showtime_id !== undefined) {
-      where.showtime_id = showtime_id;
+      include.push({
+        model: Booking,
+        where: { showtime_id },
+        attributes: [],
+      });
     }
 
     const tickets = await Ticket.findAll({
       where: Object.keys(where).length ? where : undefined,
+      include,
     });
 
     res.json(tickets);
@@ -30,21 +37,28 @@ router.get("/", async (req, res) => {
 // POST /tickets
 router.post("/", async (req, res) => {
   try {
-    const {
-      booking_id,
-      user_id,
-      movie_id,
-      showtime_id,
-      cinema_id,
-      auditorium_id,
-      seat_id,
-      seat_label,
-      price,
-    } = req.body;
+    const { booking_id, seat_id, price } = req.body;
 
-    // Check for seat conflict: same seat_id and showtime_id
+    if (!booking_id || !seat_id) {
+      return res.status(400).json({ message: "booking_id and seat_id are required" });
+    }
+
+    const booking = await Booking.findByPk(booking_id);
+    if (!booking) {
+      return res.status(400).json({ message: "Booking not found" });
+    }
+
+    // Check for seat conflict: same seat_id and showtime_id via booking
     const existingTicket = await Ticket.findOne({
-      where: { showtime_id, seat_id },
+      where: { seat_id },
+      include: [
+        {
+          model: Booking,
+          required: true,
+          where: { showtime_id: booking.showtime_id },
+          attributes: [],
+        },
+      ],
     });
 
     if (existingTicket) {
@@ -55,13 +69,7 @@ router.post("/", async (req, res) => {
 
     const ticket = await Ticket.create({
       booking_id,
-      user_id,
-      movie_id,
-      showtime_id,
-      cinema_id,
-      auditorium_id,
       seat_id,
-      seat_label,
       price,
     });
 

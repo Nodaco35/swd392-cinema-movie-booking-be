@@ -4,16 +4,16 @@ import { Cinema } from "../models/index.js";
 const router = Router();
 
 // GET /cinemas
-// GET /cinemas?id=<id>&id=<id>
+// GET /cinemas?cinema_id=<id>&cinema_id=<id>
 router.get("/", async (req, res) => {
   try {
-    const { id } = req.query;
+    const { cinema_id } = req.query;
 
-    if (id !== undefined) {
-      const ids = Array.isArray(id) ? id : [id];
+    if (cinema_id !== undefined) {
+      const ids = Array.isArray(cinema_id) ? cinema_id : [cinema_id];
       const cinemas = await Cinema.findAll({
         where: {
-          id: ids,
+          cinema_id: ids,
         },
       });
       return res.json(cinemas);

@@ -4,17 +4,17 @@ import { Movie } from "../models/index.js";
 const router = Router();
 
 // GET /movies
-// GET /movies?id=<id>&id=<id>
+// GET /movies?movie_id=<id>&movie_id=<id>
 router.get("/", async (req, res) => {
   try {
-    const { id } = req.query;
+    const { movie_id } = req.query;
 
-    if (id !== undefined) {
-      // Supports single id or multiple ids (e.g. ?id=1&id=2)
-      const ids = Array.isArray(id) ? id : [id];
+    if (movie_id !== undefined) {
+      // Supports single id or multiple ids (e.g. ?movie_id=1&movie_id=2)
+      const ids = Array.isArray(movie_id) ? movie_id : [movie_id];
       const movies = await Movie.findAll({
         where: {
-          id: ids,
+          movie_id: ids,
         },
       });
       return res.json(movies);

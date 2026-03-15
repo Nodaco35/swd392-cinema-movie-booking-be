@@ -3,7 +3,7 @@ import { Seat } from "../models/index.js";
 
 const router = Router();
 
-// GET /seats?auditorium_id=<id>&_sort=row_label,seat_number
+// GET /seats?auditorium_id=<id>&_sort=row_name,seat_number
 router.get("/", async (req, res) => {
   try {
     const { auditorium_id, _sort } = req.query;
