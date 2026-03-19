@@ -7,6 +7,10 @@ export function validateHoldSeats({ user_id, showtime_id, seat_ids }) {
   if (!user_id || !showtime_id || !Array.isArray(seat_ids)) {
     return "user_id, showtime_id, seat_ids are required";
   }
+  //thêm mới: cần chọn ít nhất 1 ghế
+  if (seat_ids.length === 0) {
+    return "seat_ids must not be empty";
+  }
   return null;
 }
 
